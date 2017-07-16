@@ -21,7 +21,8 @@ before("Starting up...", (done) => {
 });
 
 after("Cleaning up...", (done) => {
-  done();
+  Models.Users.destroy({ where: {} })
+  .then( done() );
 });
 
 describe("A user", () => {
