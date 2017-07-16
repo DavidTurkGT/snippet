@@ -1,0 +1,23 @@
+{
+  "name": "snippet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "NODE_ENV=test mocha",
+    "start": "node server.js && open ../client/html/index.html"
+  },
+  "author": "David Turk",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "express-validator": "^3.2.1",
+    "morgan": "^1.8.2",
+    "pg": "^6.4.1",
+    "sequelize": "^4.3.2"
+  }
+}
