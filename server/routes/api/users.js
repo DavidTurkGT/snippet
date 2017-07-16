@@ -21,6 +21,11 @@ router.post('/login', (req, res) => {
   res.send("Log in a user");
 });
 
+router.post('/logout', (req, res) => {
+  //Logs a user out
+  res.send("Log out a user");
+});
+
 router.get('/whoami', (req, res) => {
   //Returns the user on the session or null
   res.send("Returns the session");

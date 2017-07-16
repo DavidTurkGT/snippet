@@ -5,8 +5,7 @@ module.exports = function(sequelize, DataTypes) {
     salt: DataTypes.TEXT,
     iterations: DataTypes.INTEGER,
     hash: DataTypes.TEXT
-  }, {}
-  });
+  }, {});
 
   Users.associates = (models) => {
     Users.hasMany(
