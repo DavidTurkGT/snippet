@@ -12,6 +12,12 @@ function sendError(status, res, err){
         msg: typeof err === 'string' ? err : err.join("\n")
       })
       break;
+    case 401:
+      res.status(401).json({
+        status: 401,
+        msg: 'Invalid username/password'
+      })
+      break;
     case 404:
       res.status(404).json({
         status: 404,
@@ -60,9 +66,9 @@ let config2 = {
 };
 
 function isPasswordCorrect(user, passwordAttempt) {
-  let savedHash = user.passwordHash;
-  let savedSalt = user.passwordSalt;
-  let savedIterations = user.passwordIterations;
+  let savedHash = user.hash;
+  let savedSalt = user.salt;
+  let savedIterations = user.iterations;
 
   let hash = crypto.pbkdf2Sync(passwordAttempt, savedSalt, savedIterations, config2.keylen, config2.digest);
 
@@ -71,7 +77,7 @@ function isPasswordCorrect(user, passwordAttempt) {
 }
 
 //Middleware
-function validateNewUser(req, res, next) {
+function validateRequest(req, res, next) {
   req.checkBody("username", "Username cannot be blank").notEmpty();
   req.checkBody("password", "Password cannot be blank").notEmpty();
 
@@ -83,18 +89,23 @@ function validateNewUser(req, res, next) {
     sendError(400, res, errMsg);
   }
   else{
-    //Check for a unique username
-    Models.Users.find({ where: {username: req.body.username} })
-    .then( (user) => {
-      if(user){
-        sendError(400, res, "Username already taken");
-      }
-      else{
-        next();
-      }
-    })
+    next();
   }
 };
+
+function validateUniqueUser (req, res, next) {
+  //Check for a unique username
+  Models.Users.find({ where: {username: req.body.username} })
+  .then( (user) => {
+    if(user){
+      sendError(400, res, "Username already taken");
+    }
+    else{
+      next();
+    }
+  })
+}
+
 
 router.get('/', (req, res) => {
   //Returns an array of all users
@@ -105,7 +116,7 @@ router.get('/', (req, res) => {
   });
 });
 
-router.post("/", validateNewUser, (req, res) => {
+router.post("/", validateRequest, validateUniqueUser, (req, res) => {
   //Create a new user
   let hashedPassword = hashPassword(req.body.password);
   let newUser = {
@@ -140,9 +151,25 @@ router.get('/:userId', (req, res) => {
   });
 });
 
-router.post('/login', (req, res) => {
-  //Logs a user in
-  res.send("Log in a user");
+router.post('/login', validateRequest, (req, res) => {
+  //Find the user in the database
+  Models.Users.find({
+    where: {username: req.body.username}
+  })
+  .catch( (err) => sendError(500, res, err) )
+  .then( (user) => {
+    if(!user){
+      sendError(401, res);
+    }
+    else{
+      if( isPasswordCorrect(user, req.body.password) ){
+        res.status(200).send("Logged in!");
+      }
+      else{
+        sendError(401, res);
+      }
+    }
+  })
 });
 
 router.post('/logout', (req, res) => {

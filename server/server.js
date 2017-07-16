@@ -12,7 +12,7 @@ app.use( bodyParser.json() );
 app.use( validator() );
 
 //Morgan
-app.use( morgan('dev') );
+// app.use( morgan('dev') );
 
 app.set('port', (process.env.PORT || 3000 ) );
 
