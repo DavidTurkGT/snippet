@@ -19,4 +19,8 @@ app.set('port', (process.env.PORT || 3000 ) );
 //Router
 app.use(router);
 
-app.listen( app.get('port'), () => console.log("App running on port",app.get('port')));
+if(require.main === module){
+  app.listen( app.get('port'), () => console.log("App running on port",app.get('port')));
+}
+
+module.exports = app;
