@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.title {
+  text-align: center;
+  color: #43B929
+}
+
+.login-container, .sign-up-container {
+  background-color: #181F1C;
+  color: #FFF;
+  width: 80vh;
+  margin: auto;
+  padding: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
