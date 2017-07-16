@@ -1,0 +1,22 @@
+const express           = require('express');
+const validator         = require('express-validator');
+const bodyParser        = require('body-parser');
+const morgan            = require('morgan');
+const router            = require('./routes');
+
+const app = express();
+
+//Body Parser
+app.use( bodyParser.urlencoded({ extended: true }) );
+app.use( bodyParser.json() );
+app.use( validator() );
+
+//Morgan
+app.use( morgan('dev') );
+
+app.set('port', (process.env.PORT || 3000 ) );
+
+//Router
+app.use(router);
+
+app.listen( app.get('port'), () => console.log("App running on port",app.get('port')));
