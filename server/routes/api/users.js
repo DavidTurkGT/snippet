@@ -23,20 +23,22 @@ function sendError(status, res, err){
         status: 404,
         msg: "No matching item found"
       })
+      break;
     case 500:
+    console.log("The response: ", res);
       res.status(500).json({
         status: 500,
         error: err,
         msg: "Internal server error"
       });
-    break;
+      break;
     default:
       res.status(500).json({
         status: 500,
         error: err,
         msg: "Unrecognized error"
       });
-    break;
+      break;
   }
 };
 
@@ -112,6 +114,9 @@ router.get('/', (req, res) => {
   Models.Users.findAll({})
   .catch( (err) => sendError(500, res, err) )
   .then( (users) => {
+    for(let i = 0; i < users.length; i++){
+      users[i] = users[i].dataValues;
+    }
     res.status(200).json({users: users});
   });
 });
@@ -141,13 +146,29 @@ router.post("/", validateRequest, validateUniqueUser, (req, res) => {
   })
 });
 
+router.get('/whoami', (req, res) => {
+  //Returns the user on the session or null
+  if(!req.session.userId){
+    sendError(404, res);
+  }
+  else{
+    Models.Users.find({
+      where: { id: req.session.userId }
+    })
+    .catch( (err) => sendError(500, res, err) )
+    .then( (user) => {
+      res.status(200).json({user: user.dataValues})
+    })
+  }
+});
+
 router.get('/:userId', (req, res) => {
   //Find a specific user
   Models.Users.find({ where: {id: req.params.userId } })
   .catch( (err) => sendError(500, err, res) )
   .then( (user) => {
     if(!user) sendError(404, res);
-    else res.status(200).json({ user: user });
+    else res.status(200).json({ user: user.dataValues });
   });
 });
 
@@ -163,6 +184,7 @@ router.post('/login', validateRequest, (req, res) => {
     }
     else{
       if( isPasswordCorrect(user, req.body.password) ){
+        req.session.userId = user.id;
         res.status(200).send("Logged in!");
       }
       else{
@@ -177,9 +199,6 @@ router.post('/logout', (req, res) => {
   res.send("Log out a user");
 });
 
-router.get('/whoami', (req, res) => {
-  //Returns the user on the session or null
-  res.send("Returns the session");
-});
+
 
 module.exports = router;

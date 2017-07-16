@@ -3,6 +3,7 @@ const validator         = require('express-validator');
 const bodyParser        = require('body-parser');
 const morgan            = require('morgan');
 const router            = require('./routes');
+const session           = require('express-session')
 
 const app = express();
 
@@ -13,6 +14,13 @@ app.use( validator() );
 
 //Morgan
 // app.use( morgan('dev') );
+
+//Sessions
+app.use(session({
+  secret: 'cornbread',
+  resave: false,
+  saveUninitialized: false,
+}));
 
 app.set('port', (process.env.PORT || 3000 ) );
 
