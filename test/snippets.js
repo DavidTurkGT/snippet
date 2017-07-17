@@ -1,16 +1,27 @@
 const assert        = require('assert');
 const request      = require('supertest');
-const models        = require('../models');
+const Models        = require('../models');
 const Server        = require('../server');
 
 let User;
 
 before("Starting up...", (done) => {
-  done();
+  let newUser = {
+    username: "test",
+    salt: "himalayan",
+    iterations: 42,
+    hash: "browns"
+  }
+  Models.Users.create(newUser)
+  .then( (user) => {
+    User = user;
+    done();
+  });
 });
 
 after("Cleaning up...", (done) => {
-  done();
+  Models.Users.destroy({ where: {} })
+  .then( done() );
 });
 
 describe("The snippet API", () => {
@@ -21,7 +32,6 @@ describe("The snippet API", () => {
       .expect('Content-Type','application/json; charset=utf-8')
       .expect( (res) => {
         assert(res.body.snippets,"No snippets received");
-        assert(res.body.snippets.length, "Snippets received has no length. Is it an array?");
       })
       .end( (err, res) => {
         if(err) done(err);

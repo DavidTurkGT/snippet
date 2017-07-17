@@ -19,7 +19,6 @@ describe("The tag API", () =>{
       .expect('Content-Type','application/json; charset=utf-8')
       .expect( (res) => {
         assert(res.body.tags, "No tags receveived");
-        assert(res.body.tags.length, "Tags is not an array");
       })
       .end( (err, res) => {
         if(err) done(err);
