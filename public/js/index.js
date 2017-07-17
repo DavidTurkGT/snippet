@@ -1,6 +1,5 @@
 console.log("Hello there!");
 
-//TODO:Integrate with API to log in and create users
 function login() {
   let errors = logInValidationErrors();
   if(errors.length){

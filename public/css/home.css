@@ -1,0 +1,75 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+
+.title{
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  background-color: #181F1C;
+  height: 15vh;
+}
+
+.title h1{
+  flex: 1 75%;
+  text-align: center;
+}
+
+.title h3 {
+  flex: 0 1 20%;
+}
+
+.container {
+  background-color: #000;
+  display: flex;
+  height: 85vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  flex: 1 15%;
+  background-color: #181F1C;
+  text-align: center;
+}
+
+.all-snips{
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.my-snipe{
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.tags, .languages{
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.tags-list, .languages-list {
+  height: 20vh;
+  overflow-y: scroll;
+}
+
+.tags-list li, .languages-list li {
+  margin: 0.5rem;
+}
+
+.snips {
+  flex: 1 75%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow-y: scroll;
+}
+
+.snip {
+  flex: 0 1 85%;
+  background-color: green;
+  margin: 1rem;
+  padding: 1rem;
+}
