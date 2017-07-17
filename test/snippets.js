@@ -20,8 +20,11 @@ before("Starting up...", (done) => {
 });
 
 after("Cleaning up...", (done) => {
-  Models.Users.destroy({ where: {} })
-  .then( done() );
+  Models.Snippets.destroy({ where: {} })
+  .then( () => {
+    Models.Users.destroy({ where: {} })
+    .then( done() );
+  })
 });
 
 describe("The snippet API", () => {
@@ -58,14 +61,15 @@ describe("The snippet API", () => {
       .post('/api/snippets')
       .send({
         title: "New snippet",
-        code: "JavaJavaJava"
+        code: "JavaJavaJava",
+        userId: User.id
       })
       .expect(200)
       .expect('Content-Type','application/json; charset=utf-8')
       .expect( (res) => {
         assert(res.body.snippet, "No snippet received");
         assert.equal(res.body.snippet.title,"New snippet","Names do not match");
-        assert.equal(res.body.snippet.code,"JavaJavaJava", "Code does not match");
+        assert.equal(res.body.snippet.body,"JavaJavaJava", "Code does not match");
       })
       .end( (err, res) => {
         if(err) done(err);

@@ -70,7 +70,21 @@ router.get("/", (req, res) => {
 });
 
 router.post('/', validateSnipPost, (req, res) => {
-  res.send("Under construction");
+  newSnip = {
+    title: req.body.title,
+    body: req.body.code,
+    userId: req.body.userId
+  }
+  Models.Snippets.create(newSnip)
+  .catch( (err) => {
+    console.log("ERROR!" ,err);
+    sendError(500, res, err)
+  })
+  .then( (newSnip) => {
+    res.status(200).json({
+      snippet: newSnip
+    })
+  })
 })
 
 router.get("/:userId", (req, res) => {
