@@ -11,6 +11,11 @@
   background-color: #000;
 }
 
+.messages {
+  color: #FFF;
+  text-align: center;
+}
+
 .title {
   text-align: center;
   color: #43B929

@@ -4,8 +4,18 @@ const bodyParser        = require('body-parser');
 const morgan            = require('morgan');
 const router            = require('./routes');
 const session           = require('express-session')
+const path              = require('path');
+const mustacheExpress = require('mustache-express');
 
 const app = express();
+
+app.use(express.static('public'));
+
+app.engine('mustache', mustacheExpress());
+
+app.set('views','./views');
+app.set('view engine','mustache');
+
 
 //Body Parser
 app.use( bodyParser.urlencoded({ extended: true }) );

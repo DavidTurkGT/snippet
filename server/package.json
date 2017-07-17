@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "NODE_ENV=test mocha",
-    "start": "node server.js && open ../client/html/index.html"
+    "start": "node server.js; open ../client/html/index.html"
   },
   "author": "David Turk",
   "license": "ISC",
@@ -18,6 +18,9 @@
     "express-session": "^1.15.3",
     "express-validator": "^3.2.1",
     "morgan": "^1.8.2",
+    "mustache": "^2.3.0",
+    "mustache-express": "^1.2.5",
+    "path": "^0.12.7",
     "pg": "^6.4.1",
     "sequelize": "^4.3.2",
     "supertest": "^3.0.0"
